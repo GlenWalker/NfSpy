@@ -219,15 +219,15 @@ def test():
         C = UDPMountClient
     if sys.argv[1:]: host = sys.argv[1]
     else: host = ''
-    print "exports on %s" % host
+    print ("exports on %s" % host)
     mcl = C(host)
     list = mcl.Export()
     for item in list:
-        print item
+        print(item)
         try:
             mcl.Mnt(item[0])
         except:
-            print 'Sorry'
+            print ('Sorry')
             continue
         mcl.Umnt(item[0])
 

@@ -17,7 +17,7 @@ class NFSFuse(NfSpy, fuse.Fuse):
         try:
             NfSpy.fsinit(self)
         except RuntimeError as e:
-            raise fuse.FuseError, e.message
+            raise fuse.FuseError(e.message)
 
     def getattr(self, path):
         st = NfSpy.getattr(self, path)
