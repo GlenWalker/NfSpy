@@ -1,9 +1,9 @@
 # Modified from code distributed with Python 2.6
 # NFS RPC client -- RFC 1094
 
-import rpc
-from rpc import UDPClient, TCPClient
-from mountclient import FHSIZE, Mount3Packer, Mount3Unpacker
+from . import rpc
+from .rpc import UDPClient, TCPClient
+from .mountclient import FHSIZE, Mount3Packer, Mount3Unpacker
 import errno
 import os
 

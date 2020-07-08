@@ -1,5 +1,5 @@
 import fuse
-from nfspy import NfSpy, NFSStat
+from .nfspy import NfSpy, NFSStat
 
 fuse.fuse_python_api = (0, 2)
 

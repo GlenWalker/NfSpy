@@ -10,8 +10,8 @@
 # protocol, use multiple inheritance as shown below.
 
 
-import rpc
-from rpc import Packer, Unpacker, TCPClient, UDPClient, UDPPortMapperClient
+from . import rpc
+from .rpc import Packer, Unpacker, TCPClient, UDPClient, UDPPortMapperClient
 
 
 # Program number and version for the mount protocol

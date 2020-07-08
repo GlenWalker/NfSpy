@@ -3,12 +3,12 @@
 # NFS v3 implementation with auth-spoofing
 # by Daniel Miller
 
-import rpc
+from . import rpc
 from errno import *
 import socket
 from time import time
-from nfsclient import *
-from mountclient import PartialMountClient, MOUNTPROG
+from .nfsclient import *
+from .mountclient import PartialMountClient, MOUNTPROG
 import os
 import stat
 from threading import Lock
