@@ -12,7 +12,7 @@ from .mountclient import PartialMountClient, MOUNTPROG
 import os
 import stat
 from threading import Lock
-from lrucache import LRU
+from .lrucache import LRU
 
 class FallbackUDPClient(rpc.RawUDPClient):
     def __init__(self, host, prog, vers, port=None):

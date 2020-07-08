@@ -12,6 +12,8 @@ NfSpy uses the Python bindings for the
 Debian as the _python-fuse_ package, on Fedora as _fuse-python_, or from the
 [project homepage](http://sourceforge.net/apps/mediawiki/fuse/index.php?title=FusePython)
 
+You'll need `libfuse-dev` installed first, then you can install fuse with `pip install python-fuse`
+
 Other Versions
 --------------
 
