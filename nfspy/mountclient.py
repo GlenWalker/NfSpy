@@ -87,7 +87,7 @@ class Mount3Unpacker(MountUnpacker):
             #Not sure how to use this:
             num_flavors = self.unpack_uint()
             auth_flavors = []
-            for n in xrange(num_flavors):
+            for n in range(num_flavors):
                 auth_flavors.append(self.unpack_uint())
         else:
             fh = None
@@ -103,10 +103,10 @@ class PartialMountClient:
     def addpackers(self):
         if self.version == 3:
             self.packer = Mount3Packer()
-            self.unpacker = Mount3Unpacker('')
+            self.unpacker = Mount3Unpacker(b'')
         else:
             self.packer = MountPacker()
-            self.unpacker = MountUnpacker('')
+            self.unpacker = MountUnpacker(b'')
 
     # This method is called by Client.__init__ to bind the socket
     # to a particular network interface and port.  We use the
