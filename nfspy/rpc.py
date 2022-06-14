@@ -14,6 +14,7 @@
 import xdrlib
 import socket
 import os
+import itertools
 
 RPCVERSION = 2
 
@@ -147,7 +148,7 @@ class Unpacker(xdrlib.Unpacker):
 # Subroutines to create opaque authentication objects
 
 def make_auth_null():
-    return ''
+    return b''
 
 def make_auth_unix(seed, host, uid, gid, groups):
     p = Packer()
@@ -163,7 +164,7 @@ def make_auth_unix_default():
         uid = gid = 0
     import time
     return make_auth_unix(int(time.time()-unix_epoch()), \
-              socket.gethostname(), uid, gid, [])
+              socket.gethostname().encode(), uid, gid, [])
 
 _unix_epoch = -1
 def unix_epoch():
@@ -230,7 +231,7 @@ class Client:
     def addpackers(self):
         # Override this to use derived classes from Packer/Unpacker
         self.packer = Packer()
-        self.unpacker = Unpacker('')
+        self.unpacker = Unpacker(b'')
 
     def make_call(self, proc, args, pack_func, unpack_func):
         # Don't normally override this (but see Broadcast)
@@ -296,7 +297,7 @@ def recvfrag(sock):
         ord(header[2])<<8 | ord(header[3])
     last = ((x & 0x80000000) != 0)
     n = int(x & 0x7fffffff)
-    frag = ''
+    frag = b''
     while n > 0:
         buf = sock.recv(n)
         if not buf: raise EOFError
@@ -305,7 +306,7 @@ def recvfrag(sock):
     return last, frag
 
 def recvrecord(sock):
-    record = ''
+    record = b''
     last = 0
     while not last:
         last, frag = recvfrag(sock)
@@ -322,8 +323,9 @@ def bindresvport(sock, host):
     if last_resv_port_tried is None:
         import os
         last_resv_port_tried = FIRST + os.getpid() % (LAST-FIRST)
-    for i in range(last_resv_port_tried, LAST) + \
-              range(FIRST, last_resv_port_tried):
+    for i in itertools.chain(
+              range(last_resv_port_tried, LAST),
+              range(FIRST, last_resv_port_tried)):
         last_resv_port_tried = i
         try:
             sock.bind((host, i))
@@ -524,7 +526,7 @@ class PartialPortMapperClient:
 
     def addpackers(self):
         self.packer = PortMapperPacker()
-        self.unpacker = PortMapperUnpacker('')
+        self.unpacker = PortMapperUnpacker(b'')
 
     def Set(self, mapping):
         return self.make_call(PMAPPROC_SET, mapping, \
@@ -743,7 +745,7 @@ class Server:
     def addpackers(self):
         # Override this to use derived classes from Packer/Unpacker
         self.packer = Packer()
-        self.unpacker = Unpacker('')
+        self.unpacker = Unpacker(b'')
 
 
 class TCPServer(Server):
