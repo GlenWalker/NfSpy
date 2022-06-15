@@ -282,8 +282,11 @@ class Client:
 def sendfrag(sock, last, frag):
     x = len(frag)
     if last: x = x | 0x80000000
-    header = (chr(int(x>>24 & 0xff)) + chr(int(x>>16 & 0xff)) + \
-              chr(int(x>>8 & 0xff)) + chr(int(x & 0xff)))
+    if str is bytes:
+        header = (chr(int(x>>24 & 0xff)) + chr(int(x>>16 & 0xff)) + \
+                  chr(int(x>>8 & 0xff)) + chr(int(x & 0xff)))
+    else:
+        header = bytes([x>>24 & 0xff, x>>16 & 0xff, x>>8 & 0xff, x & 0xff])
     sock.send(header + frag)
 
 def sendrecord(sock, record):
@@ -293,8 +296,11 @@ def recvfrag(sock):
     header = sock.recv(4)
     if len(header) < 4:
         raise EOFError
-    x = long(ord(header[0]))<<24 | ord(header[1])<<16 | \
-        ord(header[2])<<8 | ord(header[3])
+    if isinstance(header, str):
+        x = long(ord(header[0]))<<24 | ord(header[1])<<16 | \
+                 ord(header[2])<<8 | ord(header[3])
+    else:
+        x = header[0]<<24 | header[1]<<16 | header[2]<<8 | header[3]
     last = ((x & 0x80000000) != 0)
     n = int(x & 0x7fffffff)
     frag = b''
