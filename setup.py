@@ -19,4 +19,5 @@ setup( name='NfSpy',
         url='https://github.com/bonsaiviking/NfSpy',
         packages=['nfspy'],
         scripts=scripts,
+        install_requires=['standard-xdrlib; python_version >= "3.13"'],
         )
